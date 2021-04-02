@@ -99,7 +99,7 @@ async def users(e):
     y = x.split(" ")
     users_list = "List Of Total Users In Bot. \n\n"
     for xx in y:
-        users_list += f"=> {xx} \n"
+        users_list += f"=> Name: {name}ID: {xx}\n"
     sudo = SUDOS.split(" ")
     if str(e.sender_id) in sudo:
         if len(users_list) < 4096:
@@ -132,7 +132,7 @@ async def add(event):
 
 @tgbot.on(events.InlineQuery(pattern=r"(.*)"))
 async def inline_id_handler(event: events.InlineQuery.Event):
-    query = event.pattern_match.group(1)
+    query = event.text
     if event.query.user_id:
         x = ud.get("USERS")
         if x:
@@ -153,7 +153,7 @@ async def inline_id_handler(event: events.InlineQuery.Event):
         shivambro = requests.get(programmingerror).json()
         search_items = shivambro.get("items")
 
-        try:
+        if query:
             for i, search_item in enumerate(search_items, start=1):
                 title = search_item.get("title")
                 # Idea By @ProgrammingError
@@ -184,7 +184,7 @@ async def inline_id_handler(event: events.InlineQuery.Event):
                     )
                 )
             await event.answer(padhai)
-        except TypeError:
+        else:
             padhai.append(
                 await event.builder.article(
                     title="Give Something to search.",
