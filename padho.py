@@ -68,13 +68,9 @@ async def start(event):
     events.NewMessage(incoming=True, pattern="/stats", func=lambda e: e.is_private)
 )
 async def start(event):
-    x = ud.get("USERS")
-    y = x.split(" ")
-    count = 0
-    for xx in y:
-        count += 1
-    sudo = SUDOS.split(" ")
-    if str(event.sender_id) in sudo:
+    x = len(ud.get("USERS").split())
+    sudo = {int(i) for i in SUDOS.split()}
+    if event.sender_id in sudo:
         await event.reply(f"The Total Number of users is {count}")
 
 
@@ -82,8 +78,8 @@ async def start(event):
     events.NewMessage(incoming=True, pattern="/destroydb", func=lambda e: e.is_private)
 )
 async def destroy(event):
-    sudo = SUDOS.split(" ")
-    if str(event.sender_id) in sudo:
+    sudo = {int(i) for i in SUDOS.split()}
+    if event.sender_id in sudo:
         try:
             ud.delete("USERS")
             await event.reply("Destroyed DataBase successfully!")
@@ -95,13 +91,11 @@ async def destroy(event):
     events.NewMessage(incoming=True, pattern="/users", func=lambda e: e.is_private)
 )
 async def users(e):
-    x = ud.get("USERS")
-    y = x.split(" ")
-    users_list = "List Of Total Users In Bot. \n\n"
-    for xx in y:
-        users_list += f"=> Name: {name}ID: {xx}\n"
-    sudo = SUDOS.split(" ")
-    if str(e.sender_id) in sudo:
+    all_users = ud.get("USERS").split()
+    users_list = "List Of Total Users In Bot:\n\n"
+    users_list += "\n".join([f"=> {user}" for user in all_users])
+    sudo = {int(i) for i in SUDOS.split()}
+    if e.sender_id in sudo:
         if len(users_list) < 4096:
             await e.reply(users_list)
         else:
@@ -120,26 +114,24 @@ async def users(e):
 async def add(event):
     x = ud.get("USERS")
     if x:
-        y = x.split(" ")
-        for xx in y:
-            if str(event.sender_id) not in y:
-                ud.set("USERS", x + " " + str(event.sender_id))
-            else:
-                pass
+        x = {int(i) for i in x.split()}
+        for xx in x:
+            if event.sender_id not in y:
+                ud.set("USERS", f"{xx} {str(event.sender_id)}")
     else:
         ud.set("USERS", str(SUDOS))
 
 
 @tgbot.on(events.InlineQuery(pattern=r"(.*)"))
 async def inline_id_handler(event: events.InlineQuery.Event):
-    query = event.text
+    query = event.pattern_match.group(1)
     if event.query.user_id:
         x = ud.get("USERS")
         if x:
             y = x.split(" ")
             for xx in y:
                 if str(event.sender_id) not in y:
-                    ud.set("USERS", x + " " + str(event.sender_id))
+                    ud.set("USERS", f"{x} {str(event.sender_id)}")
                 else:
                     pass
         else:
@@ -153,7 +145,7 @@ async def inline_id_handler(event: events.InlineQuery.Event):
         shivambro = requests.get(programmingerror).json()
         search_items = shivambro.get("items")
 
-        if query:
+        try:
             for i, search_item in enumerate(search_items, start=1):
                 title = search_item.get("title")
                 # Idea By @ProgrammingError
@@ -184,7 +176,7 @@ async def inline_id_handler(event: events.InlineQuery.Event):
                     )
                 )
             await event.answer(padhai)
-        else:
+        except TypeError:
             padhai.append(
                 await event.builder.article(
                     title="Give Something to search.",
