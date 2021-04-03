@@ -198,7 +198,7 @@ async def inline_id_handler(event: events.InlineQuery.Event):
             )
             await event.answer(padhai)
     except:
-        traceback.print_exc(file.sys.stdout)
+        traceback.print_exc(file=sys.stdout)
 
 
 try:
