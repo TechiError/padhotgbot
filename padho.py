@@ -40,7 +40,7 @@ except BaseException:
     pass
 
 apis = APIS.split(" ")
-API_KEY = random.choice(apis)
+
 
 SEARCH_ENGINE_ID = "d99e58572df67b77a"
 
@@ -132,6 +132,7 @@ async def add(event):
 
 @tgbot.on(events.InlineQuery(pattern=r"(.*)"))
 async def inline_id_handler(event: events.InlineQuery.Event):
+    API_KEY = random.choice(apis)
     query = event.text
     try:
         x = ud.get("USERS")
