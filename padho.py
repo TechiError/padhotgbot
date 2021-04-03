@@ -184,7 +184,7 @@ async def inline_id_handler(event: events.InlineQuery.Event):
                     )
                 await event.answer(padhai)
             else:
-                print(search_items)
+                print(shivambro)
         else:
             padhai.append(
                 await event.builder.article(
