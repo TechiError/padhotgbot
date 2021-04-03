@@ -1,0 +1,5 @@
+python-decouple
+telethon
+requests
+redis
+google-api-python-client

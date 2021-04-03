@@ -1,0 +1,33 @@
+{
+    "name": "Padho TG Bot",
+    "description": "Simple bot to scrap answers from toppr and brainly in Telethon.",
+    "logo": "",
+    "keywords": [
+        "telegram",
+        "telethon",
+        "telegram-bot",
+        "noobiezbots"
+    ],
+    "repository": "https://github.com/ProgrammingError/padhotgbot",
+    "website": "notavailable.live",
+    "success_url": "https://t.me/NoobiezBots",
+    "env": {
+        "API_HASH": {
+            "description": "You API HASH from my.telegram.org",
+            "value": ""
+        },
+        "APP_ID": {
+            "description": "You API ID from my.telegram.org",
+            "value": ""
+        },
+        "BOT_TOKEN": {
+            "description": "Bot token, get it from @BotFather.",
+            "value": ""
+        }
+    },
+    "buildpacks": [
+        {
+            "url": "heroku/python"
+        }
+    ]
+}
