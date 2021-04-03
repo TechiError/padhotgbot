@@ -130,9 +130,13 @@ async def add(event):
         ud.set("USERS", str(SUDOS))
 
 
+async def give_api(apis):
+    API_KEY = random.choice(apis)
+    return API_KEY
+
 @tgbot.on(events.InlineQuery(pattern=r"(.*)"))
 async def inline_id_handler(event: events.InlineQuery.Event):
-    API_KEY = random.choice(apis)
+    
     query = event.text
     try:
         x = ud.get("USERS")
@@ -152,36 +156,39 @@ async def inline_id_handler(event: events.InlineQuery.Event):
             programmingerror = f"https://customsearch.googleapis.com/customsearch/v1?q={query}&cx={SEARCH_ENGINE_ID}&start=1&key={API_KEY}"
             shivambro = requests.get(programmingerror).json()
             search_items = shivambro.get("items")
-            for search_item in search_items:
-                title = search_item.get("title")
-                # Idea By @ProgrammingError
-                # Made By @ProgrammingError
-                # Thanks To Google😂😂😂# https://www.googleapis.com/customsearch/v1?key=AIzaSyAyDBsY3WRtB5YPC6aB_w8JAy6ZdXNc6FU&cx=d99e58572df67b77a&q=vector
-                danish_00 = search_item.get("link")
-                atul_xd = search_item.get("snippet")
-                # Idea By @ProgrammingError
-                # Made By @ProgrammingError
-                # Thanks To Google😂😂😂
-                toppers = f"{title}\n\nAnswer in Short:\n\n{atul_xd}"
-                padho = f"{title}"
-                padhai.append(
-                    await event.builder.article(
-                        title=padho,
-                        description=f"{atul_xd}",  # Idea By @ProgrammingError
-                        # Made By @ProgrammingError
-                        # Thanks To Google😂😂😂
-                        text=toppers,
-                        buttons=[
-                            [Button.url("Answer", f"{danish_00}")],
-                            [
-                                Button.switch_inline(
-                                    "Search Again", query=" ", same_peer=True
-                                )
+            if search_items is not None:
+                for search_item in search_items:
+                    title = search_item.get("title")
+                    # Idea By @ProgrammingError
+                    # Made By @ProgrammingError
+                    # Thanks To Google😂😂😂# https://www.googleapis.com/customsearch/v1?key=AIzaSyAyDBsY3WRtB5YPC6aB_w8JAy6ZdXNc6FU&cx=d99e58572df67b77a&q=vector
+                    danish_00 = search_item.get("link")
+                    atul_xd = search_item.get("snippet")
+                    # Idea By @ProgrammingError
+                    # Made By @ProgrammingError
+                    # Thanks To Google😂😂😂
+                    toppers = f"{title}\n\nAnswer in Short:\n\n{atul_xd}"
+                    padho = f"{title}"
+                    padhai.append(
+                        await event.builder.article(
+                            title=padho,
+                            description=f"{atul_xd}",  # Idea By @ProgrammingError
+                            # Made By @ProgrammingError
+                            # Thanks To Google😂😂😂
+                            text=toppers,
+                            buttons=[
+                                [Button.url("Answer", f"{danish_00}")],
+                                [
+                                    Button.switch_inline(
+                                        "Search Again", query=" ", same_peer=True
+                                    )
+                                ],
                             ],
-                        ],
+                        )
                     )
-                )
-            await event.answer(padhai)
+                await event.answer(padhai)
+            else:
+                print(search_items)
         else:
             padhai.append(
                 await event.builder.article(
