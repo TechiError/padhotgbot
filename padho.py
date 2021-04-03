@@ -130,14 +130,9 @@ async def add(event):
         ud.set("USERS", str(SUDOS))
 
 
-async def give_api(apis):
-    API_KEY = random.choice(apis)
-    return API_KEY
-
-
 @tgbot.on(events.InlineQuery(pattern=r"(.*)"))
 async def inline_id_handler(event: events.InlineQuery.Event):
-
+    API_KEY = random.choice(apis)
     query = event.text
     try:
         x = ud.get("USERS")
